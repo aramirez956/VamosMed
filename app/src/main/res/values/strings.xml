@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">VamosMed</string>
+    <string name="title_bici">Viaje Bici</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_estadistica">Estadísticas</string>
+    <string name="title_perfil">Perfil</string>
+</resources>
