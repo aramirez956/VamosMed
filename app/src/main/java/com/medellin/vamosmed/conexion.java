@@ -2,6 +2,12 @@ package com.medellin.vamosmed;
 
 import android.os.AsyncTask;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -62,7 +68,7 @@ public class conexion extends AsyncTask<String,String,String> {
                 String linea="";
                 while ((linea=in.readLine())!= null){
                     sb.append(linea);
-                    break;
+                    //break;
                 }
                 in.close();
                 result= sb.toString();
