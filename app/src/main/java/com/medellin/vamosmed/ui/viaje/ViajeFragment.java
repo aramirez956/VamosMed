@@ -75,7 +75,7 @@ public class ViajeFragment extends Fragment {
     View vista;
     TextView tvLatitud, tvLongitud;
     ProgressDialog progressDialog;//dialogo cargando
-    ImageView ubicarmeMapa, ayudaMpa;
+    ImageView ubicarmeMapa, ayudaMpa, aprobar;
     Button buttonIniciarViaje, buttonFinalizarViaje;
 
     private GraphicsOverlay mGraphicsOverlay;
@@ -92,10 +92,12 @@ public class ViajeFragment extends Fragment {
         tvLatitud = vista.findViewById(R.id.tvLatitud);
         tvLongitud = vista.findViewById(R.id.tvLongitud);
         ubicarmeMapa = vista.findViewById(R.id.ubicarmeMapa);
+        aprobar = vista.findViewById(R.id.aprobar);
         buttonIniciarViaje = vista.findViewById(R.id.iniciaViaje);
         buttonFinalizarViaje = vista.findViewById(R.id.finalizarViaje);
         // *** ADD para el mapa***
         mMapView = vista.findViewById(R.id.mapView);
+        Modelo modelo = (Modelo) getActivity().getApplicationContext();
 
         if (getActivity().getSupportFragmentManager().getBackStackEntryCount() == 0) {
             //Toast.makeText(getContext(), "sin fragmento", Toast.LENGTH_SHORT).show();
@@ -104,6 +106,14 @@ public class ViajeFragment extends Fragment {
             setupLocationDisplay();// Localización*/
 
             ubicarmeMapa.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setupLocationDisplay();
+                    Toast.makeText(getContext(), "Obteniendo ubicación actual", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            aprobar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     setupLocationDisplay();
@@ -137,14 +147,18 @@ public class ViajeFragment extends Fragment {
                 //Toast.makeText(this,"Cargando mapa",Toast.LENGTH_SHORT).show();
             }
 
+            if(modelo.getEsJefe() > 0) {
+                aprobar.setVisibility(View.VISIBLE);
+            } else {
+                aprobar.setVisibility(View.INVISIBLE);
+            }
+
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     progressDialog.dismiss();
                 }
             }, 4000L);
-
-            Modelo modelo = (Modelo) getActivity().getApplicationContext();
 
             // Filtro de acciones que serán alertadas
             IntentFilter filter = new IntentFilter(
@@ -167,66 +181,76 @@ public class ViajeFragment extends Fragment {
                         .addToBackStack("viaje")
                         .commit();
             }
-                setupMap(); // Mapa
-                addServicio(); // Cargar servicio
-                setupLocationDisplay();// Localización*/
+            setupMap(); // Mapa
+            addServicio(); // Cargar servicio
+            setupLocationDisplay();// Localización*/
 
-                ubicarmeMapa.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        setupLocationDisplay();
-                        Toast.makeText(getContext(), "Obteniendo ubicación actual", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                buttonIniciarViaje.setOnClickListener(new View.OnClickListener() {
-                    @RequiresApi(api = Build.VERSION_CODES.O)
-                    @Override
-                    public void onClick(View v) {
-                        onClickIniciarViaje(v);
-                    }
-                });
-
-                buttonFinalizarViaje.setOnClickListener(new View.OnClickListener() {
-                    @RequiresApi(api = Build.VERSION_CODES.O)
-                    @Override
-                    public void onClick(View v) {
-                        stopLocationService();
-                    }
-                });
-
-                if (isLocationServiceRunning()) {
-                    buttonIniciarViaje.setVisibility(View.INVISIBLE);
-                    buttonFinalizarViaje.setVisibility(View.VISIBLE);
-                    Toast.makeText(getContext(), "Viaje iniciado y obteniendo coordenadas", Toast.LENGTH_SHORT).show();
-                } else {
-                    buttonIniciarViaje.setVisibility(View.VISIBLE);
-                    buttonFinalizarViaje.setVisibility(View.INVISIBLE);
-                    //Toast.makeText(this,"Cargando mapa",Toast.LENGTH_SHORT).show();
+            ubicarmeMapa.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setupLocationDisplay();
+                    Toast.makeText(getContext(), "Obteniendo ubicación actual", Toast.LENGTH_SHORT).show();
                 }
+            });
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        progressDialog.dismiss();
-                    }
-                }, 4000L);
+            aprobar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setupLocationDisplay();
+                    Toast.makeText(getContext(), "Obteniendo ubicación actual", Toast.LENGTH_SHORT).show();
+                }
+            });
 
-                Modelo modelo = (Modelo) getActivity().getApplicationContext();
+            buttonIniciarViaje.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @Override
+                public void onClick(View v) {
+                    onClickIniciarViaje(v);
+                }
+            });
 
-                // Filtro de acciones que serán alertadas
-                IntentFilter filter = new IntentFilter(
-                        modelo.ACTION_START_LOCATION_SERVICE);
-                filter.addAction(modelo.ACTION_STOP_LOCATION_SERVICE);
+            buttonFinalizarViaje.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @Override
+                public void onClick(View v) {
+                    stopLocationService();
+                }
+            });
 
-                // Crear un nuevo ResponseReceiver
-                ResponseReceiver receiver = new ResponseReceiver();
-                // Registrar el receiver y su filtro
-                LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, filter);
-                return vista;
+            if (isLocationServiceRunning()) {
+                buttonIniciarViaje.setVisibility(View.INVISIBLE);
+                buttonFinalizarViaje.setVisibility(View.VISIBLE);
+                Toast.makeText(getContext(), "Viaje iniciado y obteniendo coordenadas", Toast.LENGTH_SHORT).show();
+            } else {
+                buttonIniciarViaje.setVisibility(View.VISIBLE);
+                buttonFinalizarViaje.setVisibility(View.INVISIBLE);
+                //Toast.makeText(this,"Cargando mapa",Toast.LENGTH_SHORT).show();
+            }
 
+            if(modelo.getEsJefe() > 0) {
+                aprobar.setVisibility(View.VISIBLE);
+            } else {
+                aprobar.setVisibility(View.INVISIBLE);
+            }
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    progressDialog.dismiss();
+                }
+            }, 4000L);
+
+            // Filtro de acciones que serán alertadas
+            IntentFilter filter = new IntentFilter(
+                    modelo.ACTION_START_LOCATION_SERVICE);
+            filter.addAction(modelo.ACTION_STOP_LOCATION_SERVICE);
+
+            // Crear un nuevo ResponseReceiver
+            ResponseReceiver receiver = new ResponseReceiver();
+            // Registrar el receiver y su filtro
+            LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, filter);
+            return vista;
         }
-
     }
 
     // Broadcast receiver que recibe las emisiones desde los servicios
@@ -392,7 +416,7 @@ public class ViajeFragment extends Fragment {
         getActivity().startService(intent);
         Toast.makeText(getContext(), "Viaje iniciado", Toast.LENGTH_SHORT).show();
         modelo.setEstadoViaje(true);
-        //iniciarViajeDb();
+        iniciarViajeDb();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -435,7 +459,7 @@ public class ViajeFragment extends Fragment {
             buttonFinalizarViaje.setVisibility(View.INVISIBLE);
             modelo.setEstadoViaje(false);
             mMapView.getGraphicsOverlays().clear();
-            //consultarUltimoViajePendiente();
+            consultarUltimoViajePendiente();
 
             // Crea el nuevo fragmento y la transacción.
             Fragment NotificationsFragment = new EstadisticasFragment();
@@ -475,7 +499,7 @@ public class ViajeFragment extends Fragment {
                         //Toast.makeText(getApplicationContext(),"IdViaje # : "+ID_VIAJE,Toast.LENGTH_SHORT).show();
                     }
                 }
-                //finalizarViajeDb();
+                finalizarViajeDb();
             }
         } catch (JSONException e) {
             e.printStackTrace();

@@ -29,6 +29,8 @@ public class ViajeBici extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        //MOSTRAR EN LA PARTE DE ABAJO PESTAÑAS SEGUN EL TIPO DE CONTRATO
+
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -47,8 +49,7 @@ public class ViajeBici extends AppCompatActivity {
             Intent viaje = new Intent(this, Bienvenida.class);
             startActivity(viaje);
             Modelo modelo = (Modelo) getApplicationContext();
-            Intent localIntent = new Intent(modelo.ACTION_STOP_LOCATION_SERVICE)
-                .putExtra("coordenadas...", "coor");
+            Intent localIntent = new Intent(modelo.ACTION_STOP_LOCATION_SERVICE).putExtra("coordenadas...", "coor");
             LocalBroadcastManager.getInstance(this).sendBroadcast(localIntent);
             finish();
         }else{
@@ -81,8 +82,7 @@ public class ViajeBici extends AppCompatActivity {
                 Intent viaje = new Intent(this, Bienvenida.class);
                 startActivity(viaje);
                 Modelo modelo = (Modelo) getApplicationContext();
-                Intent localIntent = new Intent(modelo.ACTION_STOP_LOCATION_SERVICE)
-                        .putExtra("coordenadas...", "coor");
+                Intent localIntent = new Intent(modelo.ACTION_STOP_LOCATION_SERVICE).putExtra("coordenadas...", "coor");
                 LocalBroadcastManager.getInstance(this).sendBroadcast(localIntent);
                 finish();
             }else{

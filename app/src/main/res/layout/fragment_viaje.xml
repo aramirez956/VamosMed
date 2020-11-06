@@ -9,13 +9,15 @@
     <com.esri.arcgisruntime.mapping.view.MapView
         android:id="@+id/mapView"
         android:layout_width="409dp"
-        android:layout_height="487dp"
+        android:layout_height="490dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.333"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.146"></com.esri.arcgisruntime.mapping.view.MapView>
+        app:layout_constraintVertical_bias="1.0">
+
+    </com.esri.arcgisruntime.mapping.view.MapView>
 
     <ImageView
         android:id="@+id/ayudaMpa"
@@ -42,6 +44,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.32"
         app:srcCompat="@drawable/ic_ubicacion" />
+
+    <ImageView
+        android:id="@+id/aprobar"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:src="@drawable/ic_aprobaciones"
+        android:tint="@color/colorGreen"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.44"
+        app:srcCompat="@drawable/ic_aprobaciones" />
 
     <Button
         android:id="@+id/iniciaViaje"
